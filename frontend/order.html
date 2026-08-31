@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Place Order - Vedanshi Natu Kodi Eggs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+      background: linear-gradient(135deg, #fefcf5 0%, #fdf0d5 50%, #fefcf5 100%); 
+      min-height: 100vh; 
+      padding-top: 80px;
+    }
+    .card { 
+      border: none; 
+      border-radius: 15px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+    }
+    .card-header { border-radius: 15px 15px 0 0; padding: 1.5rem; }
+    .form-control { 
+      border-radius: 10px; 
+      padding: 0.8rem 1rem; 
+      border: 1px solid #e0d6c8; 
+    }
+    .form-control:focus { 
+      border-color: #f5b342; 
+      box-shadow: 0 0 0 0.2rem rgba(245,179,66,0.25); 
+    }
+    .form-label { font-weight: 600; color: #444; }
+    .btn-warning { 
+      background-color: #f5b342; 
+      border-color: #f5b342; 
+      color: #1e1e1e; 
+      font-weight: 700; 
+      border-radius: 50px; 
+      padding: 1rem; 
+      font-size: 1.1rem; 
+      transition: all 0.3s ease;
+    }
+    .btn-warning:hover { 
+      background-color: #e6a130; 
+      border-color: #e6a130; 
+      color: white; 
+      transform: translateY(-2px); 
+      box-shadow: 0 4px 15px rgba(245,179,66,0.3); 
+    }
+    #totalPrice { font-size: 1.5rem; }
+
+    /* Product Icon Display */
+    .product-icon-display {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      margin: 0 auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .product-icon-display.egg { background: linear-gradient(135deg, #f5b342, #e6a130); }
+    .product-icon-display.fruit { background: linear-gradient(135deg, #28a745, #20c997); }
+    .product-icon-display.powder { background: linear-gradient(135deg, #6c757d, #495057); }
+    .product-icon-display.oil { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+    .product-icon-display.honey { background: linear-gradient(135deg, #fd7e14, #dc3545); }
+    .product-icon-display.ghee { background: linear-gradient(135deg, #ffd700, #daa520); }
+    .product-icon-display.spices { background: linear-gradient(135deg, #dc3545, #6f42c1); }
+    .product-icon-display.grains { background: linear-gradient(135deg, #8B7355, #6d4c2a); }
+    .product-icon-display.dairy { background: linear-gradient(135deg, #17a2b8, #0dcaf0); }
+    .product-icon-display.default { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+    /* Success Animation */
+    .success-animation { margin: 0 auto; width: 100px; height: 100px; }
+    .checkmark { 
+      width: 100px; 
+      height: 100px; 
+      border-radius: 50%; 
+      display: block; 
+      stroke-width: 2; 
+      stroke: #4CAF50; 
+      stroke-miterlimit: 10; 
+      box-shadow: inset 0px 0px 0px #4CAF50; 
+      animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both; 
+      margin: 0 auto; 
+    }
+    .checkmark__circle { 
+      stroke-dasharray: 166; 
+      stroke-dashoffset: 166; 
+      stroke-width: 2; 
+      stroke-miterlimit: 10; 
+      stroke: #4CAF50; 
+      fill: none; 
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards; 
+    }
+    .checkmark__check { 
+      transform-origin: 50% 50%; 
+      stroke-dasharray: 48; 
+      stroke-dashoffset: 48; 
+      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards; 
+    }
+    @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+    @keyframes scale { 0%, 100% { transform: none; } 50% { transform: scale3d(1.1, 1.1, 1); } }
+    @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 30px #4CAF50; } }
+
+    @media (max-width: 768px) { 
+      body { padding-top: 70px; } 
+      .product-icon-display { width: 80px; height: 80px; font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><i class="fas fa-egg"></i> Vedanshi Natu Kodi Eggs</a>
+      <div class="ms-auto">
+        <a href="index.html" class="btn btn-outline-light"><i class="fas fa-arrow-left"></i> Back</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Order Form -->
+  <div class="container mt-5 pt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="fas fa-shopping-cart"></i> Place Your Order</h4>
+          </div>
+          <div class="card-body">
+            <!-- Product Details -->
+            <div class="card mb-4 border-warning">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-4 text-center">
+                    <div id="productIconContainer">
+                      <div class="product-icon-display default" id="productIcon">
+                        <i class="fas fa-box"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <h4 class="mb-2" id="productName">Loading...</h4>
+                    <p class="text-muted mb-2" id="productDescription">Loading...</p>
+                    <div class="alert alert-warning d-inline-block mb-0">
+                      <strong>Price:</strong> <span id="productPrice" class="fs-4">₹0.00</span> <small>/ dozen</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <form id="orderForm">
+              <h5 class="mb-3 text-primary"><i class="fas fa-user"></i> Customer Details</h5>
+              <div class="mb-3">
+                <label class="form-label">Full Name *</label>
+                <input type="text" class="form-control" id="customerName" required placeholder="Enter your full name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" class="form-control" id="customerPhone" required placeholder="Enter your phone number">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="customerEmail" placeholder="Enter your email (optional)">
+              </div>
+              <hr>
+              <h5 class="mb-3 text-primary"><i class="fas fa-truck"></i> Delivery Information</h5>
+              <div class="mb-3">
+                <label class="form-label">Delivery Address *</label>
+                <textarea class="form-control" id="deliveryAddress" rows="3" required placeholder="Enter your complete delivery address"></textarea>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">City *</label>
+                  <input type="text" class="form-control" id="deliveryCity" required placeholder="Enter your city">
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Pincode *</label>
+                  <input type="text" class="form-control" id="deliveryPincode" required placeholder="Enter pincode">
+                </div>
+              </div>
+              <hr>
+              <h5 class="mb-3 text-primary"><i class="fas fa-box"></i> Order Details</h5>
+              <div class="mb-3">
+                <label class="form-label">Quantity (in dozens) *</label>
+                <input type="number" class="form-control" id="quantity" required min="1" max="100" value="1" oninput="calculateTotal()" style="font-size: 1.2rem; font-weight: 600;">
+                <div class="form-text">Minimum 1 dozen, Maximum 100 dozens</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Special Instructions</label>
+                <textarea class="form-control" id="specialInstructions" rows="2" placeholder="Any special instructions (optional)"></textarea>
+              </div>
+              <div class="alert alert-success text-center">
+                <h4 class="mb-0"><i class="fas fa-calculator"></i> Total Amount: <span id="totalPrice" class="fw-bold text-success">₹0.00</span></h4>
+              </div>
+              <div id="orderStatus"></div>
+              <button type="submit" class="btn btn-warning btn-lg w-100" id="submitOrderBtn">
+                <i class="fas fa-check-circle"></i> Place Order
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center p-5">
+          <div class="success-animation">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+              <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+          </div>
+          <h2 class="mt-3 text-success">Order Placed Successfully!</h2>
+          <p class="text-muted">Thank you for your order!</p>
+          <div class="card mt-4 shadow-sm">
+            <div class="card-body text-start">
+              <h5 class="card-title text-primary"><i class="fas fa-receipt"></i> Order Details</h5>
+              <hr>
+              <p><strong>Order Number:</strong> <span id="successOrderNumber" class="text-danger fw-bold"></span></p>
+              <p><strong>Product:</strong> <span id="successProductName"></span></p>
+              <p><strong>Quantity:</strong> <span id="successQuantity"></span> dozen</p>
+              <p><strong>Total Amount:</strong> <span id="successTotalAmount" class="text-success fw-bold fs-5"></span></p>
+              <p><strong>Customer:</strong> <span id="successCustomerName"></span></p>
+              <p><strong>Phone:</strong> <span id="successCustomerPhone"></span></p>
+              <p><strong>Delivery Address:</strong> <span id="successDeliveryAddress"></span></p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-warning btn-lg me-2" onclick="window.location.href='index.html'"><i class="fas fa-home"></i> Home</button>
+            <button class="btn btn-outline-secondary btn-lg" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ===== CONFIG =====
+    const API_BASE = 'http://localhost:3000';
+
+    // ===== PRODUCT TYPES =====
+    const productTypes = {
+      egg: { icon: 'fa-egg', cssClass: 'egg' },
+      fruit: { icon: 'fa-apple-alt', cssClass: 'fruit' },
+      powder: { icon: 'fa-mortar-pestle', cssClass: 'powder' },
+      oil: { icon: 'fa-flask', cssClass: 'oil' },
+      honey: { icon: 'fa-jar', cssClass: 'honey' },
+      ghee: { icon: 'fa-butter', cssClass: 'ghee' },
+      spices: { icon: 'fa-pepper', cssClass: 'spices' },
+      grains: { icon: 'fa-wheat', cssClass: 'grains' },
+      dairy: { icon: 'fa-cheese', cssClass: 'dairy' },
+      default: { icon: 'fa-box', cssClass: 'default' }
+    };
+
+    // ===== GET PRODUCT ID =====
+    const productId = sessionStorage.getItem('selectedProductId');
+    let selectedProduct = null;
+    let productLoaded = false;
+
+    // ===== LOAD PRODUCT =====
+    async function loadProductDetails() {
+      const productNameEl = document.getElementById('productName');
+      const productPriceEl = document.getElementById('productPrice');
+      const productDescriptionEl = document.getElementById('productDescription');
+      const productIcon = document.getElementById('productIcon');
+      const totalPriceEl = document.getElementById('totalPrice');
+
+      if (!productId) {
+        productNameEl.textContent = 'No product selected';
+        productPriceEl.textContent = '₹0.00';
+        productDescriptionEl.textContent = 'Please go back and select a product';
+        productIcon.className = 'product-icon-display default';
+        productIcon.innerHTML = '<i class="fas fa-box"></i>';
+        totalPriceEl.textContent = '₹0.00';
+        return;
+      }
+
+      productNameEl.textContent = 'Loading...';
+      productPriceEl.textContent = '₹0.00';
+      productDescriptionEl.textContent = 'Loading product details...';
+      productIcon.className = 'product-icon-display default';
+      productIcon.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+      totalPriceEl.textContent = '₹0.00';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/eggs/${productId}`);
+        if (!response.ok) throw new Error('Product not found');
+        const product = await response.json();
+        selectedProduct = product;
+        productLoaded = true;
+
+        const type = product.productType || 'default';
+        const typeInfo = productTypes[type] || productTypes.default;
+
+        productNameEl.textContent = product.name;
+        productDescriptionEl.textContent = product.description;
+        productPriceEl.textContent = `₹${product.price.toFixed(2)}`;
+        productIcon.className = `product-icon-display ${typeInfo.cssClass}`;
+        productIcon.innerHTML = `<i class="fas ${typeInfo.icon}"></i>`;
+        document.getElementById('quantity').value = 1;
+        calculateTotal();
+      } catch (error) {
+        console.error('Error loading product:', error);
+        productNameEl.textContent = 'Product not found';
+        productPriceEl.textContent = '₹0.00';
+        productDescriptionEl.textContent = 'Please go back and try again';
+        productIcon.className = 'product-icon-display default';
+        productIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+        totalPriceEl.textContent = '₹0.00';
+        productLoaded = false;
+      }
+    }
+
+    // ===== CALCULATE TOTAL =====
+    function calculateTotal() {
+      const totalPriceEl = document.getElementById('totalPrice');
+      if (!selectedProduct || !productLoaded) {
+        totalPriceEl.textContent = '₹0.00';
+        return;
+      }
+      const quantity = parseInt(document.getElementById('quantity').value) || 0;
+      if (quantity < 1) {
+        totalPriceEl.textContent = '₹0.00';
+        return;
+      }
+      const total = quantity * selectedProduct.price;
+      totalPriceEl.textContent = `₹${total.toFixed(2)}`;
+    }
+
+    // ===== SUBMIT ORDER =====
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitOrderBtn');
+      const orderStatus = document.getElementById('orderStatus');
+
+      if (!selectedProduct || !productLoaded) {
+        orderStatus.innerHTML = '<div class="alert alert-danger">No product selected. Please go back and select a product.</div>';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing Order...';
+      orderStatus.innerHTML = '';
+
+      const quantity = parseInt(document.getElementById('quantity').value);
+      const totalAmount = quantity * selectedProduct.price;
+
+      const orderData = {
+        productId: selectedProduct._id,
+        productName: selectedProduct.name,
+        productPrice: selectedProduct.price,
+        quantity: quantity,
+        totalAmount: totalAmount,
+        customerName: document.getElementById('customerName').value.trim(),
+        customerPhone: document.getElementById('customerPhone').value.trim(),
+        customerEmail: document.getElementById('customerEmail').value.trim(),
+        deliveryAddress: document.getElementById('deliveryAddress').value.trim(),
+        deliveryCity: document.getElementById('deliveryCity').value.trim(),
+        deliveryPincode: document.getElementById('deliveryPincode').value.trim(),
+        specialInstructions: document.getElementById('specialInstructions').value.trim()
+      };
+
+      try {
+        const response = await fetch(`${API_BASE}/api/orders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+
+        const data = await response.json();
+
+        if (response.status === 201) {
+          document.getElementById('successOrderNumber').textContent = data.orderNumber;
+          document.getElementById('successProductName').textContent = data.productName;
+          document.getElementById('successQuantity').textContent = data.quantity;
+          document.getElementById('successTotalAmount').textContent = `₹${data.totalAmount.toFixed(2)}`;
+          document.getElementById('successCustomerName').textContent = data.customerName;
+          document.getElementById('successCustomerPhone').textContent = data.customerPhone;
+          document.getElementById('successDeliveryAddress').textContent = `${data.deliveryAddress}, ${data.deliveryCity} - ${data.deliveryPincode}`;
+
+          const modal = new bootstrap.Modal(document.getElementById('successModal'));
+          modal.show();
+
+          sessionStorage.removeItem('selectedProductId');
+          document.getElementById('orderForm').style.display = 'none';
+        } else {
+          orderStatus.innerHTML = `<div class="alert alert-danger">${data.error || 'Failed to place order. Please try again.'}</div>`;
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order';
+        }
+      } catch (error) {
+        console.error('Order error:', error);
+        orderStatus.innerHTML = '<div class="alert alert-danger">Network error. Please try again.</div>';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order';
+      }
+    });
+
+    // ===== INIT =====
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProductDetails();
+      const quantityInput = document.getElementById('quantity');
+      quantityInput.addEventListener('input', calculateTotal);
+      quantityInput.addEventListener('change', calculateTotal);
+    });
+  </script>
+</body>
+</html>

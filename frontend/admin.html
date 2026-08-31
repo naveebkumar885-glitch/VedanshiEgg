@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Vedanshi Natu Kodi Eggs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f4f6f9; padding-top: 70px; }
+    .navbar { box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .card-header { border-radius: 15px 15px 0 0; padding: 1rem 1.5rem; }
+    #orderSummary .card { transition: transform 0.3s ease; }
+    #orderSummary .card:hover { transform: translateY(-5px); }
+    #orderSummary .border-start { border-width: 4px !important; }
+    .table img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+    .form-control { border-radius: 10px; padding: 0.8rem 1rem; border: 1px solid #e0d6c8; }
+    .form-control:focus { border-color: #f5b342; box-shadow: 0 0 0 0.2rem rgba(245,179,66,0.25); }
+    .btn-warning { background-color: #f5b342; border-color: #f5b342; color: #1e1e1e; font-weight: 600; padding: 0.8rem 1.5rem; border-radius: 50px; }
+    .btn-warning:hover { background-color: #e6a130; border-color: #e6a130; color: white; }
+    .badge-status { padding: 0.5rem 1rem; border-radius: 50px; font-weight: 600; }
+    .badge-pending { background-color: #fff3cd; color: #856404; }
+    .badge-confirmed { background-color: #d1ecf1; color: #0c5460; }
+    .badge-delivered { background-color: #d4edda; color: #155724; }
+    .badge-cancelled { background-color: #f8d7da; color: #721c24; }
+    .status-delivered { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 8px 16px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; }
+    
+    /* Product Type Selection Cards */
+    .product-type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+      margin: 15px 0;
+    }
+    .product-type-card {
+      background: #f8f9fa;
+      border: 3px solid #e9ecef;
+      border-radius: 12px;
+      padding: 15px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .product-type-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .product-type-card.selected {
+      border-color: #f5b342;
+      background: #fff8e7;
+      box-shadow: 0 0 0 3px rgba(245,179,66,0.3);
+    }
+    .product-type-card i {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .product-type-card .type-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #555;
+    }
+    .product-type-card .type-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-top: 5px;
+      border: 2px solid #ddd;
+    }
+    
+    /* Product Display with Icons */
+    .product-icon-display {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      margin: 0 auto;
+    }
+    .product-icon-display.egg { background: linear-gradient(135deg, #f5b342, #e6a130); }
+    .product-icon-display.fruit { background: linear-gradient(135deg, #28a745, #20c997); }
+    .product-icon-display.powder { background: linear-gradient(135deg, #6c757d, #495057); }
+    .product-icon-display.oil { background: linear-gradient(135deg, #ffc107, #fd7e14); }
+    .product-icon-display.honey { background: linear-gradient(135deg, #fd7e14, #dc3545); }
+    .product-icon-display.ghee { background: linear-gradient(135deg, #ffd700, #daa520); }
+    .product-icon-display.spices { background: linear-gradient(135deg, #dc3545, #6f42c1); }
+    .product-icon-display.grains { background: linear-gradient(135deg, #8B7355, #6d4c2a); }
+    .product-icon-display.dairy { background: linear-gradient(135deg, #17a2b8, #0dcaf0); }
+    .product-icon-display.default { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+    @media (max-width: 768px) { body { padding-top: 65px; } }
+  </style>
+</head>
+<body>
+  <!-- Admin Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="admin.html"><i class="fas fa-shield-alt"></i> Admin Panel</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#orders"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+          <li class="nav-item"><a class="nav-link" href="#addProduct"><i class="fas fa-plus-circle"></i> Add Product</a></li>
+          <li class="nav-item"><a class="nav-link" href="#manageProducts"><i class="fas fa-list"></i> Manage Products</a></li>
+        </ul>
+        <a href="index.html" class="btn btn-outline-light ms-3"><i class="fas fa-home"></i> View Website</a>
+        <button class="btn btn-outline-danger ms-2" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title"><i class="fas fa-lock"></i> Admin Login</h5></div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Admin Password</label>
+            <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password">
+          </div>
+          <div id="loginStatus"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-fluid mt-5 pt-3" id="adminContent" style="display:none;">
+    <!-- Order Summary Cards -->
+    <div class="row mb-4" id="orderSummary">
+      <div class="col-md-4">
+        <div class="card shadow-sm border-start border-warning border-4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div><h6 class="text-muted mb-1">Pending Orders</h6><h2 class="mb-0 text-warning" id="pendingCount">0</h2></div>
+              <i class="fas fa-clock fa-3x text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm border-start border-info border-4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div><h6 class="text-muted mb-1">Confirmed Orders</h6><h2 class="mb-0 text-info" id="confirmedCount">0</h2></div>
+              <i class="fas fa-check-circle fa-3x text-info"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm border-start border-success border-4">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <div><h6 class="text-muted mb-1">Delivered Orders</h6><h2 class="mb-0 text-success" id="deliveredCount">0</h2></div>
+              <i class="fas fa-check-double fa-3x text-success"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Orders -->
+    <div class="row mb-4" id="pendingOrders">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-header bg-warning text-dark">
+            <h4 class="mb-0"><i class="fas fa-clock"></i> Pending Orders <span class="badge bg-dark ms-2" id="pendingBadge">0</span></h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Product</th><th>Qty</th><th>Total</th><th>Address</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody id="pendingOrdersBody"><tr><td colspan="9" class="text-center text-muted"><div class="spinner-border text-warning"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmed Orders -->
+    <div class="row mb-4" id="confirmedOrders">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-header bg-info text-white">
+            <h4 class="mb-0"><i class="fas fa-check-circle"></i> Confirmed Orders <span class="badge bg-dark ms-2" id="confirmedBadge">0</span></h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Product</th><th>Qty</th><th>Total</th><th>Address</th><th>Date</th><th>Actions</th></tr></thead>
+                <tbody id="confirmedOrdersBody"><tr><td colspan="9" class="text-center text-muted"><div class="spinner-border text-info"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delivered Orders -->
+    <div class="row mb-4" id="deliveredOrders">
+      <div class="col-12">
+        <div class="card shadow">
+          <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="fas fa-check-double"></i> Delivered Orders <span class="badge bg-dark ms-2" id="deliveredBadge">0</span></h4>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead><tr><th>Order #</th><th>Customer</th><th>Phone</th><th>Product</th><th>Qty</th><th>Total</th><th>Address</th><th>Date</th><th>Status</th></tr></thead>
+                <tbody id="deliveredOrdersBody"><tr><td colspan="9" class="text-center text-muted"><div class="spinner-border text-success"></div></td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Product & Manage Products -->
+    <div class="row mb-4" id="addProduct">
+      <div class="col-lg-6">
+        <div class="card shadow">
+          <div class="card-header bg-warning text-dark"><h4 class="mb-0"><i class="fas fa-plus-circle"></i> Add New Product</h4></div>
+          <div class="card-body">
+            <form id="addProductForm">
+              <div class="mb-3">
+                <label class="form-label">Product Name *</label>
+                <input type="text" class="form-control" id="productName" required placeholder="e.g., Organic Eggs, Honey, Turmeric Powder">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description *</label>
+                <textarea class="form-control" id="productDescription" rows="3" required placeholder="Describe your product"></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Price (₹) *</label>
+                <input type="number" class="form-control" id="productPrice" required min="0" step="0.01" placeholder="e.g., 350">
+              </div>
+              
+              <!-- Product Type Selection -->
+              <div class="mb-3">
+                <label class="form-label">Product Type *</label>
+                <p class="text-muted small">Select the type of product to display the appropriate icon</p>
+                <div class="product-type-grid" id="productTypeGrid">
+                  <!-- Egg -->
+                  <div class="product-type-card" data-type="egg" onclick="selectProductType('egg')">
+                    <i class="fas fa-egg"></i>
+                    <div class="type-label">Eggs</div>
+                    <div class="type-color" style="background:#f5b342;"></div>
+                  </div>
+                  <!-- Fruit -->
+                  <div class="product-type-card" data-type="fruit" onclick="selectProductType('fruit')">
+                    <i class="fas fa-apple-alt"></i>
+                    <div class="type-label">Fruits</div>
+                    <div class="type-color" style="background:#28a745;"></div>
+                  </div>
+                  <!-- Powder -->
+                  <div class="product-type-card" data-type="powder" onclick="selectProductType('powder')">
+                    <i class="fas fa-mortar-pestle"></i>
+                    <div class="type-label">Powder</div>
+                    <div class="type-color" style="background:#6c757d;"></div>
+                  </div>
+                  <!-- Oil -->
+                  <div class="product-type-card" data-type="oil" onclick="selectProductType('oil')">
+                    <i class="fas fa-flask"></i>
+                    <div class="type-label">Oil</div>
+                    <div class="type-color" style="background:#fd7e14;"></div>
+                  </div>
+                  <!-- Honey -->
+                  <div class="product-type-card" data-type="honey" onclick="selectProductType('honey')">
+                    <i class="fas fa-jar"></i>
+                    <div class="type-label">Honey</div>
+                    <div class="type-color" style="background:#daa520;"></div>
+                  </div>
+                  <!-- Ghee -->
+                  <div class="product-type-card" data-type="ghee" onclick="selectProductType('ghee')">
+                    <i class="fas fa-butter"></i>
+                    <div class="type-label">Ghee</div>
+                    <div class="type-color" style="background:#daa520;"></div>
+                  </div>
+                  <!-- Spices -->
+                  <div class="product-type-card" data-type="spices" onclick="selectProductType('spices')">
+                    <i class="fas fa-pepper"></i>
+                    <div class="type-label">Spices</div>
+                    <div class="type-color" style="background:#dc3545;"></div>
+                  </div>
+                  <!-- Grains -->
+                  <div class="product-type-card" data-type="grains" onclick="selectProductType('grains')">
+                    <i class="fas fa-wheat"></i>
+                    <div class="type-label">Grains</div>
+                    <div class="type-color" style="background:#8B7355;"></div>
+                  </div>
+                  <!-- Dairy -->
+                  <div class="product-type-card" data-type="dairy" onclick="selectProductType('dairy')">
+                    <i class="fas fa-cheese"></i>
+                    <div class="type-label">Dairy</div>
+                    <div class="type-color" style="background:#17a2b8;"></div>
+                  </div>
+                  <!-- Default -->
+                  <div class="product-type-card" data-type="default" onclick="selectProductType('default')">
+                    <i class="fas fa-box"></i>
+                    <div class="type-label">Other</div>
+                    <div class="type-color" style="background:#6c757d;"></div>
+                  </div>
+                </div>
+                <input type="hidden" id="productType" value="">
+                <div id="typeError" class="text-danger small mt-1" style="display:none;">Please select a product type</div>
+              </div>
+              
+              <!-- Preview -->
+              <div class="mb-3">
+                <label class="form-label">Preview</label>
+                <div class="card">
+                  <div class="card-body text-center">
+                    <div id="previewIcon" class="product-icon-display default" style="width:80px;height:80px;font-size:3rem;margin:0 auto;">
+                      <i class="fas fa-box"></i>
+                    </div>
+                    <p class="mt-2 mb-0" id="previewName">Product Name</p>
+                    <small class="text-muted" id="previewPrice">₹0.00</small>
+                  </div>
+                </div>
+              </div>
+              
+              <button type="submit" class="btn btn-warning w-100"><i class="fas fa-plus-circle"></i> Add Product</button>
+            </form>
+            <div id="addStatus" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" id="manageProducts">
+        <div class="card shadow">
+          <div class="card-header bg-dark text-white"><h4 class="mb-0"><i class="fas fa-list"></i> Manage Products</h4></div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead><tr><th>Icon</th><th>Name</th><th>Type</th><th>Price</th><th>Actions</th></tr></thead>
+                <tbody id="productsTableBody"><tr><td colspan="5" class="text-center text-muted"><div class="spinner-border text-warning"></div></td></tr></tbody>
+              </table>
+            </div>
+            <div id="productsStatus" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ===== CONFIG =====
+    const API_BASE = 'http://localhost:3000';
+    const ADMIN_PASSWORD = 'admin123';
+
+    let adminToken = null;
+    let loginModal = null;
+    let selectedType = 'default';
+
+    // ===== PRODUCT TYPE CONFIGURATION =====
+    const productTypes = {
+      egg: { icon: 'fa-egg', color: '#f5b342', label: 'Eggs', cssClass: 'egg' },
+      fruit: { icon: 'fa-apple-alt', color: '#28a745', label: 'Fruits', cssClass: 'fruit' },
+      powder: { icon: 'fa-mortar-pestle', color: '#6c757d', label: 'Powder', cssClass: 'powder' },
+      oil: { icon: 'fa-flask', color: '#fd7e14', label: 'Oil', cssClass: 'oil' },
+      honey: { icon: 'fa-jar', color: '#daa520', label: 'Honey', cssClass: 'honey' },
+      ghee: { icon: 'fa-butter', color: '#daa520', label: 'Ghee', cssClass: 'ghee' },
+      spices: { icon: 'fa-pepper', color: '#dc3545', label: 'Spices', cssClass: 'spices' },
+      grains: { icon: 'fa-wheat', color: '#8B7355', label: 'Grains', cssClass: 'grains' },
+      dairy: { icon: 'fa-cheese', color: '#17a2b8', label: 'Dairy', cssClass: 'dairy' },
+      default: { icon: 'fa-box', color: '#6c757d', label: 'Other', cssClass: 'default' }
+    };
+
+    // ===== SELECT PRODUCT TYPE =====
+    function selectProductType(type) {
+      selectedType = type;
+      document.getElementById('productType').value = type;
+      
+      // Update UI
+      document.querySelectorAll('.product-type-card').forEach(card => {
+        card.classList.remove('selected');
+        if (card.dataset.type === type) {
+          card.classList.add('selected');
+        }
+      });
+      
+      document.getElementById('typeError').style.display = 'none';
+      
+      // Update preview
+      const typeInfo = productTypes[type] || productTypes.default;
+      const previewIcon = document.getElementById('previewIcon');
+      previewIcon.className = `product-icon-display ${typeInfo.cssClass}`;
+      previewIcon.innerHTML = `<i class="fas ${typeInfo.icon}"></i>`;
+      
+      // Update preview name and price
+      updatePreview();
+    }
+
+    // ===== UPDATE PREVIEW =====
+    function updatePreview() {
+      const name = document.getElementById('productName').value || 'Product Name';
+      const price = document.getElementById('productPrice').value || '0';
+      document.getElementById('previewName').textContent = name;
+      document.getElementById('previewPrice').textContent = `₹${parseFloat(price).toFixed(2)}`;
+    }
+
+    // ===== CHECK LOGIN =====
+    function checkLogin() {
+      const stored = sessionStorage.getItem('adminToken');
+      if (stored) {
+        adminToken = stored;
+        document.getElementById('adminContent').style.display = 'block';
+        loadOrders();
+        loadProducts();
+        return true;
+      }
+      return false;
+    }
+
+    // ===== SHOW LOGIN =====
+    function showLogin() {
+      loginModal = new bootstrap.Modal(document.getElementById('loginModal'), { backdrop: 'static', keyboard: false });
+      loginModal.show();
+    }
+
+    // ===== LOGIN =====
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const password = document.getElementById('adminPassword').value;
+      const status = document.getElementById('loginStatus');
+
+      if (!password) {
+        status.innerHTML = '<div class="alert alert-danger">Please enter password</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/verify`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+
+        const data = await response.json();
+
+        if (data.valid) {
+          adminToken = password;
+          sessionStorage.setItem('adminToken', password);
+          loginModal.hide();
+          document.getElementById('adminContent').style.display = 'block';
+          loadOrders();
+          loadProducts();
+        } else {
+          status.innerHTML = '<div class="alert alert-danger">Invalid password</div>';
+        }
+      } catch (error) {
+        status.innerHTML = '<div class="alert alert-danger">Network error. Please try again.</div>';
+      }
+    });
+
+    // ===== LOGOUT =====
+    function logout() {
+      sessionStorage.removeItem('adminToken');
+      adminToken = null;
+      document.getElementById('adminContent').style.display = 'none';
+      showLogin();
+    }
+
+    // ===== LOAD ORDERS =====
+    async function loadOrders() {
+      try {
+        const response = await fetch(`${API_BASE}/api/orders`, {
+          headers: { 'x-admin-pass': adminToken }
+        });
+        if (response.status === 401 || response.status === 403) {
+          logout();
+          return;
+        }
+        const orders = await response.json();
+
+        const pending = orders.filter(o => o.status === 'pending');
+        const confirmed = orders.filter(o => o.status === 'confirmed');
+        const delivered = orders.filter(o => o.status === 'delivered');
+
+        document.getElementById('pendingCount').textContent = pending.length;
+        document.getElementById('confirmedCount').textContent = confirmed.length;
+        document.getElementById('deliveredCount').textContent = delivered.length;
+        document.getElementById('pendingBadge').textContent = pending.length;
+        document.getElementById('confirmedBadge').textContent = confirmed.length;
+        document.getElementById('deliveredBadge').textContent = delivered.length;
+
+        renderOrders('pendingOrdersBody', pending, 'pending');
+        renderOrders('confirmedOrdersBody', confirmed, 'confirmed');
+        renderDeliveredOrders('deliveredOrdersBody', delivered);
+      } catch (error) {
+        console.error('Error loading orders:', error);
+      }
+    }
+
+    // ===== RENDER ORDERS =====
+    function renderOrders(tbodyId, orders, statusType) {
+      const tbody = document.getElementById(tbodyId);
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted">No ${statusType} orders</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(order => `
+        <tr>
+          <td><strong>${order.orderNumber}</strong></td>
+          <td>${order.customerName}</td>
+          <td>${order.customerPhone}</td>
+          <td>${order.productName}</td>
+          <td>${order.quantity}</td>
+          <td>₹${order.totalAmount.toFixed(2)}</td>
+          <td>${order.deliveryAddress}, ${order.deliveryCity}</td>
+          <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+          <td>
+            ${statusType === 'pending' ? `
+              <button class="btn btn-sm btn-success mb-1" onclick="updateStatus('${order._id}', 'confirmed')"><i class="fas fa-check"></i> Confirm</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteOrder('${order._id}')"><i class="fas fa-trash"></i></button>
+            ` : `
+              <button class="btn btn-sm btn-success mb-1" onclick="updateStatus('${order._id}', 'delivered')"><i class="fas fa-truck"></i> Deliver</button>
+              <button class="btn btn-sm btn-danger mb-1" onclick="deleteOrder('${order._id}')"><i class="fas fa-trash"></i></button>
+            `}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // ===== RENDER DELIVERED ORDERS =====
+    function renderDeliveredOrders(tbodyId, orders) {
+      const tbody = document.getElementById(tbodyId);
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center text-muted">No delivered orders</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(order => `
+        <tr>
+          <td><strong>${order.orderNumber}</strong></td>
+          <td>${order.customerName}</td>
+          <td>${order.customerPhone}</td>
+          <td>${order.productName}</td>
+          <td>${order.quantity}</td>
+          <td>₹${order.totalAmount.toFixed(2)}</td>
+          <td>${order.deliveryAddress}, ${order.deliveryCity}</td>
+          <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+          <td><span class="status-delivered"><i class="fas fa-check-circle"></i> Delivered</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ===== UPDATE STATUS =====
+    async function updateStatus(orderId, status) {
+      if (!confirm(`Update order to ${status}?`)) return;
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/orders/${orderId}/status`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-pass': adminToken
+          },
+          body: JSON.stringify({ status })
+        });
+        if (response.ok) {
+          loadOrders();
+        } else if (response.status === 401 || response.status === 403) {
+          logout();
+        }
+      } catch (error) {
+        console.error('Error updating status:', error);
+      }
+    }
+
+    // ===== DELETE ORDER =====
+    async function deleteOrder(orderId) {
+      if (!confirm('Delete this order?')) return;
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/orders/${orderId}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-pass': adminToken }
+        });
+        if (response.ok) {
+          loadOrders();
+        } else if (response.status === 401 || response.status === 403) {
+          logout();
+        }
+      } catch (error) {
+        console.error('Error deleting order:', error);
+      }
+    }
+
+    // ===== LOAD PRODUCTS =====
+    async function loadProducts() {
+      const tbody = document.getElementById('productsTableBody');
+      try {
+        const response = await fetch(`${API_BASE}/api/eggs`);
+        const eggs = await response.json();
+
+        if (eggs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No products</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = eggs.map(egg => {
+          const type = egg.productType || 'default';
+          const typeInfo = productTypes[type] || productTypes.default;
+          return `
+            <tr>
+              <td>
+                <div class="product-icon-display ${typeInfo.cssClass}" style="width:40px;height:40px;font-size:1.2rem;">
+                  <i class="fas ${typeInfo.icon}"></i>
+                </div>
+              </td>
+              <td>${egg.name}</td>
+              <td><span class="badge bg-secondary">${typeInfo.label}</span></td>
+              <td>₹${egg.price.toFixed(2)}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteProduct('${egg._id}')"><i class="fas fa-trash"></i></button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      } catch (error) {
+        console.error('Error loading products:', error);
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Error loading products</td></tr>`;
+      }
+    }
+
+    // ===== DELETE PRODUCT =====
+    async function deleteProduct(productId) {
+      if (!confirm('Delete this product?')) return;
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/eggs/${productId}`, {
+          method: 'DELETE',
+          headers: { 'x-admin-pass': adminToken }
+        });
+        if (response.ok) {
+          loadProducts();
+        } else if (response.status === 401 || response.status === 403) {
+          logout();
+        }
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    }
+
+    // ===== ADD PRODUCT =====
+    document.getElementById('addProductForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('addStatus');
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+
+      const name = document.getElementById('productName').value.trim();
+      const description = document.getElementById('productDescription').value.trim();
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const productType = document.getElementById('productType').value;
+
+      if (!name || !description || !price) {
+        status.innerHTML = '<div class="alert alert-danger">Please fill all fields</div>';
+        return;
+      }
+
+      if (!productType) {
+        document.getElementById('typeError').style.display = 'block';
+        status.innerHTML = '<div class="alert alert-danger">Please select a product type</div>';
+        return;
+      }
+
+      // Get icon for the product type
+      const typeInfo = productTypes[productType] || productTypes.default;
+      
+      // Create image URL from type (this will be used to display icon on frontend)
+      const imageUrl = `type:${productType}`;
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+      status.innerHTML = '';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/admin/eggs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-admin-pass': adminToken
+          },
+          body: JSON.stringify({ 
+            name, 
+            description, 
+            price, 
+            imageUrl,
+            productType: productType 
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.status === 201) {
+          status.innerHTML = `<div class="alert alert-success">Product "${data.name}" added successfully! 🎉</div>`;
+          document.getElementById('addProductForm').reset();
+          document.querySelectorAll('.product-type-card').forEach(c => c.classList.remove('selected'));
+          document.getElementById('productType').value = '';
+          document.getElementById('previewIcon').className = 'product-icon-display default';
+          document.getElementById('previewIcon').innerHTML = '<i class="fas fa-box"></i>';
+          document.getElementById('previewName').textContent = 'Product Name';
+          document.getElementById('previewPrice').textContent = '₹0.00';
+          loadProducts();
+        } else if (response.status === 401 || response.status === 403) {
+          logout();
+        } else {
+          status.innerHTML = `<div class="alert alert-danger">${data.error || 'Failed to add product'}</div>`;
+        }
+      } catch (error) {
+        status.innerHTML = '<div class="alert alert-danger">Network error. Please try again.</div>';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Add Product';
+      }
+    });
+
+    // ===== AUTO-LOGIN CHECK =====
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!checkLogin()) {
+        showLogin();
+      }
+      
+      // Auto-update preview on input change
+      document.getElementById('productName').addEventListener('input', updatePreview);
+      document.getElementById('productPrice').addEventListener('input', updatePreview);
+    });
+
+    // Enter key for login
+    document.getElementById('adminPassword').addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') document.getElementById('loginBtn').click();
+    });
+  </script>
+</body>
+</html>
