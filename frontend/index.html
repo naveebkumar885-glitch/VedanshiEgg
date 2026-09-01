@@ -87,7 +87,15 @@
       color: #444; 
       margin-bottom: 2rem;
     }
-    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-buttons { 
+      display: flex; 
+      gap: 1rem; 
+      flex-wrap: wrap; 
+      margin-top: 0.5rem;
+    }
+    .hero-buttons .btn {
+      min-width: 160px;
+    }
 
     /* ===== SECTIONS ===== */
     .section-tag { 
@@ -201,385 +209,315 @@
     .product-icon-display.dairy { background: linear-gradient(135deg, #17a2b8, #0dcaf0); }
     .product-icon-display.default { background: linear-gradient(135deg, #6c757d, #343a40); }
 
-    /* ===== HERO EGG ANIMATION - "From Farm to Fresh" ===== */
+    /* ===== EGG OPENING ANIMATION WITH SUNRISE ===== */
     .hero-egg-container {
       position: relative;
       display: inline-block;
-      width: 350px;
-      height: 400px;
+      width: 400px;
+      height: 420px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #1a1a2e;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
 
-    /* ===== SCENE 1: Farm Background ===== */
-    .farm-scene {
+    /* ===== SUNRISE BACKGROUND ===== */
+    .sunrise-bg {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border-radius: 24px;
-      overflow: hidden;
-      background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
-      animation: farmSunrise 8s ease-in-out infinite;
+      background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 20%, #2d1b4e 40%, #4a2a5a 55%, #6a3a5a 65%, #8a5a4a 75%, #c47a3a 85%, #f5b342 92%, #ffd700 100%);
+      animation: sunriseGradient 10s ease-in-out infinite;
     }
 
-    @keyframes farmSunrise {
-      0%, 100% { 
-        background: linear-gradient(180deg, #FFB347 0%, #FFD89B 20%, #98D8C8 50%, #7EC8A0 75%, #5DAE7A 100%);
+    @keyframes sunriseGradient {
+      0% { 
+        background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 20%, #2d1b4e 40%, #4a2a5a 55%, #6a3a5a 65%, #8a5a4a 75%, #c47a3a 85%, #f5b342 92%, #ffd700 100%);
       }
       25% { 
-        background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
+        background: linear-gradient(180deg, #1a1a3e 0%, #2d1b4e 15%, #4a2a5a 30%, #6a3a5a 45%, #8a5a4a 55%, #c47a3a 65%, #f5b342 75%, #ffd700 85%, #fff4a0 95%);
       }
       50% { 
-        background: linear-gradient(180deg, #4A90D9 0%, #87CEEB 30%, #98D8C8 55%, #7EC8A0 75%, #5DAE7A 100%);
+        background: linear-gradient(180deg, #2d1b4e 0%, #4a2a5a 20%, #6a3a5a 35%, #8a5a4a 50%, #c47a3a 60%, #f5b342 70%, #ffd700 80%, #fff4a0 90%, #ffffff 100%);
       }
       75% { 
-        background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
+        background: linear-gradient(180deg, #1a1a3e 0%, #2d1b4e 15%, #4a2a5a 30%, #6a3a5a 45%, #8a5a4a 55%, #c47a3a 65%, #f5b342 75%, #ffd700 85%, #fff4a0 95%);
+      }
+      100% { 
+        background: linear-gradient(180deg, #0a0a1a 0%, #1a1a3e 20%, #2d1b4e 40%, #4a2a5a 55%, #6a3a5a 65%, #8a5a4a 75%, #c47a3a 85%, #f5b342 92%, #ffd700 100%);
       }
     }
 
-    /* Sun */
+    /* ===== SUN ===== */
     .sun {
       position: absolute;
-      top: 15px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(circle, #FFD700, #FFA500);
-      border-radius: 50%;
-      box-shadow: 0 0 80px rgba(255, 215, 0, 0.6), 0 0 150px rgba(255, 215, 0, 0.3);
-      animation: sunGlow 4s ease-in-out infinite;
-    }
-
-    @keyframes sunGlow {
-      0%, 100% { 
-        transform: scale(1);
-        box-shadow: 0 0 80px rgba(255, 215, 0, 0.6), 0 0 150px rgba(255, 215, 0, 0.3);
-      }
-      50% { 
-        transform: scale(1.1);
-        box-shadow: 0 0 120px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4);
-      }
-    }
-
-    /* Floating Grass / Leaves */
-    .leaf {
-      position: absolute;
-      font-size: 1.8rem;
-      opacity: 0.6;
-      animation: leafFloat 6s ease-in-out infinite;
-    }
-    .leaf:nth-child(1) { bottom: 10%; left: 5%; animation-delay: 0s; font-size: 2.2rem; }
-    .leaf:nth-child(2) { bottom: 15%; right: 8%; animation-delay: 1.5s; font-size: 1.6rem; }
-    .leaf:nth-child(3) { bottom: 5%; left: 20%; animation-delay: 3s; font-size: 2rem; }
-    .leaf:nth-child(4) { bottom: 8%; right: 25%; animation-delay: 4.5s; font-size: 1.4rem; }
-    .leaf:nth-child(5) { bottom: 20%; left: 40%; animation-delay: 2s; font-size: 1.2rem; }
-
-    @keyframes leafFloat {
-      0%, 100% { 
-        transform: translateY(0px) rotate(0deg);
-        opacity: 0.5;
-      }
-      25% { 
-        transform: translateY(-8px) rotate(10deg);
-        opacity: 0.8;
-      }
-      50% { 
-        transform: translateY(-15px) rotate(-5deg);
-        opacity: 0.9;
-      }
-      75% { 
-        transform: translateY(-8px) rotate(8deg);
-        opacity: 0.7;
-      }
-    }
-
-    /* ===== SCENE 2: Hen Walking ===== */
-    .hen {
-      position: absolute;
-      bottom: 25%;
-      left: -20%;
-      font-size: 3.5rem;
-      animation: henWalk 8s ease-in-out infinite;
-    }
-
-    @keyframes henWalk {
-      0% { 
-        transform: translateX(0px) scaleX(1);
-        opacity: 0;
-      }
-      15% { 
-        opacity: 1;
-      }
-      25% { 
-        transform: translateX(40px) scaleX(1);
-      }
-      30% { 
-        transform: translateX(50px) scaleX(-1);
-      }
-      45% { 
-        transform: translateX(120px) scaleX(-1);
-      }
-      50% { 
-        transform: translateX(130px) scaleX(1);
-      }
-      65% { 
-        transform: translateX(200px) scaleX(1);
-      }
-      70% { 
-        transform: translateX(210px) scaleX(-1);
-      }
-      85% { 
-        transform: translateX(280px) scaleX(-1);
-        opacity: 1;
-      }
-      100% { 
-        transform: translateX(350px) scaleX(-1);
-        opacity: 0;
-      }
-    }
-
-    /* ===== SCENE 3: Nest with Egg ===== */
-    .nest-container {
-      position: absolute;
-      bottom: 8%;
+      top: 40px;
       left: 50%;
       transform: translateX(-50%);
-      width: 160px;
-      height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, #fff4a0, #ffd700, #f5b342);
+      border-radius: 50%;
+      box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4), 0 0 300px rgba(255, 215, 0, 0.2);
+      animation: sunRise 10s ease-in-out infinite;
     }
 
-    .nest {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Straw Nest */
-    .nest-straw {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60%;
-      background: 
-        radial-gradient(ellipse at 30% 100%, #8B7355 0%, #6d4c2a 40%, #5a3e1b 70%, #4a3214 100%);
-      border-radius: 50% 50% 50% 50% / 100% 100% 30% 30%;
-      box-shadow: inset 0 -10px 30px rgba(0,0,0,0.3);
-    }
-
-    .straw-texture {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 60%;
-      background: 
-        repeating-linear-gradient(75deg, 
-          rgba(139, 115, 85, 0.3) 0px,
-          rgba(109, 76, 42, 0.2) 3px,
-          rgba(139, 115, 85, 0.1) 6px,
-          rgba(90, 62, 27, 0.3) 9px,
-          rgba(139, 115, 85, 0.2) 12px
-        );
-      border-radius: 50% 50% 50% 50% / 100% 100% 30% 30%;
-    }
-
-    /* ===== EGG IMAGE ===== */
-    .egg-image-wrapper {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%);
-      width: 90px;
-      height: 120px;
-      z-index: 2;
-      animation: eggReveal 8s ease-in-out infinite;
-    }
-
-    .egg-image-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
-      transition: transform 0.3s ease;
-    }
-
-    /* ===== EGG REVEAL ANIMATION ===== */
-    @keyframes eggReveal {
+    @keyframes sunRise {
       0% { 
+        transform: translateX(-50%) translateY(100px) scale(0.5);
         opacity: 0;
-        transform: translate(-50%, -55%) scale(0.7);
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
       }
-      35% { 
-        opacity: 0;
-        transform: translate(-50%, -55%) scale(0.7);
+      20% { 
+        transform: translateX(-50%) translateY(30px) scale(0.7);
+        opacity: 0.6;
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.5);
       }
       40% { 
+        transform: translateX(-50%) translateY(0px) scale(1);
         opacity: 1;
-        transform: translate(-50%, -55%) scale(0.9);
+        box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4);
       }
-      50% { 
-        transform: translate(-50%, -55%) scale(1);
+      60% { 
+        transform: translateX(-50%) translateY(-10px) scale(1.05);
+        opacity: 1;
+        box-shadow: 0 0 120px rgba(255, 215, 0, 0.9), 0 0 250px rgba(255, 215, 0, 0.5);
+      }
+      80% { 
+        transform: translateX(-50%) translateY(0px) scale(1);
+        opacity: 1;
+        box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4);
       }
       100% { 
-        opacity: 1;
-        transform: translate(-50%, -55%) scale(1);
+        transform: translateX(-50%) translateY(100px) scale(0.5);
+        opacity: 0;
+        box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
       }
     }
 
-    /* ===== SCENE 4: Warm Glow on Egg ===== */
-    .egg-glow {
+    /* ===== EGG APPEARING ===== */
+    .egg-wrapper {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -55%);
-      width: 120px;
-      height: 150px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
-      animation: eggGlow 8s ease-in-out infinite;
-      z-index: 1;
-      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      animation: eggAppear 10s ease-in-out infinite;
     }
 
-    @keyframes eggGlow {
-      0%, 30% { 
+    @keyframes eggAppear {
+      0%, 15% { 
         opacity: 0;
-        transform: translate(-50%, -55%) scale(0.5);
+        transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
+      }
+      20% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+      }
+      30% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
       }
       45% { 
-        opacity: 0.3;
-        transform: translate(-50%, -55%) scale(1.2);
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05) rotate(5deg);
       }
       55% { 
-        opacity: 1;
-        transform: translate(-50%, -55%) scale(1.5);
-      }
-      65% { 
-        opacity: 0.8;
-        transform: translate(-50%, -55%) scale(1.8);
-      }
-      75%, 100% { 
-        opacity: 0.5;
-        transform: translate(-50%, -55%) scale(1.6);
-      }
-    }
-
-    /* ===== SCENE 5: Grass appearing around ===== */
-    .grass-container {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 30%;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .grass-blade {
-      position: absolute;
-      bottom: 0;
-      width: 4px;
-      background: linear-gradient(to top, #2d7d3a, #4CAF50, #66BB6A);
-      border-radius: 2px 2px 0 0;
-      transform-origin: bottom;
-      animation: grassGrow 8s ease-in-out infinite;
-    }
-
-    .grass-blade:nth-child(1) { left: 5%; height: 30px; animation-delay: 4s; }
-    .grass-blade:nth-child(2) { left: 12%; height: 45px; animation-delay: 4.3s; width: 3px; }
-    .grass-blade:nth-child(3) { left: 20%; height: 25px; animation-delay: 4.6s; }
-    .grass-blade:nth-child(4) { left: 30%; height: 50px; animation-delay: 4.1s; width: 5px; }
-    .grass-blade:nth-child(5) { left: 40%; height: 35px; animation-delay: 4.8s; }
-    .grass-blade:nth-child(6) { left: 50%; height: 40px; animation-delay: 4.4s; }
-    .grass-blade:nth-child(7) { left: 60%; height: 28px; animation-delay: 5s; }
-    .grass-blade:nth-child(8) { left: 70%; height: 55px; animation-delay: 4.2s; width: 5px; }
-    .grass-blade:nth-child(9) { left: 80%; height: 32px; animation-delay: 4.7s; }
-    .grass-blade:nth-child(10) { left: 88%; height: 42px; animation-delay: 4.5s; }
-    .grass-blade:nth-child(11) { left: 94%; height: 20px; animation-delay: 4.9s; }
-
-    @keyframes grassGrow {
-      0%, 35% { 
-        transform: scaleY(0) rotate(-5deg);
         opacity: 0;
-      }
-      45% { 
-        transform: scaleY(1) rotate(0deg);
-        opacity: 1;
-      }
-      55% { 
-        transform: scaleY(1) rotate(3deg);
-      }
-      65% { 
-        transform: scaleY(1) rotate(-2deg);
+        transform: translate(-50%, -50%) scale(1.3) rotate(-10deg);
       }
       100% { 
-        transform: scaleY(1) rotate(0deg);
-        opacity: 1;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.3) rotate(-20deg);
       }
     }
 
-    /* ===== SCENE 6: Branding Fade In ===== */
-    .branding-overlay {
+    .egg-wrapper img {
+      width: 180px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 40px rgba(245, 179, 66, 0.3));
+      display: block;
+    }
+
+    /* ===== EGG CRACKING / OPENING ===== */
+    .egg-crack {
       position: absolute;
-      bottom: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+      pointer-events: none;
+      animation: crackOpen 10s ease-in-out infinite;
+    }
+
+    @keyframes crackOpen {
+      0%, 40% { 
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      45% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      55% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+      60% { 
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.3);
+      }
+      100% { 
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+    }
+
+    .egg-crack i {
+      font-size: 8rem;
+      color: #f5b342;
+      text-shadow: 0 0 60px rgba(245, 179, 66, 0.5);
+      animation: crackGlow 10s ease-in-out infinite;
+    }
+
+    @keyframes crackGlow {
+      0%, 40% { 
+        text-shadow: 0 0 20px rgba(245, 179, 66, 0.2);
+      }
+      50% { 
+        text-shadow: 0 0 80px rgba(245, 179, 66, 0.8), 0 0 120px rgba(245, 179, 66, 0.4);
+      }
+      60% { 
+        text-shadow: 0 0 100px rgba(245, 179, 66, 0.9), 0 0 150px rgba(245, 179, 66, 0.5);
+      }
+      100% { 
+        text-shadow: 0 0 20px rgba(245, 179, 66, 0.2);
+      }
+    }
+
+    /* ===== BRANDING REVEAL ===== */
+    .branding-reveal {
+      position: absolute;
+      bottom: 15%;
       left: 0;
       right: 0;
-      padding: 1.5rem;
-      background: linear-gradient(transparent, rgba(0,0,0,0.6));
       text-align: center;
-      opacity: 0;
-      animation: brandFadeIn 8s ease-in-out infinite;
       z-index: 5;
-      border-radius: 0 0 24px 24px;
+      padding: 1rem;
+      opacity: 0;
+      animation: brandReveal 10s ease-in-out infinite;
     }
 
-    @keyframes brandFadeIn {
-      0%, 65% { 
+    @keyframes brandReveal {
+      0%, 55% { 
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(30px);
       }
-      75% { 
+      65% { 
+        opacity: 1;
+        transform: translateY(0px);
+      }
+      90% { 
         opacity: 1;
         transform: translateY(0px);
       }
       100% { 
-        opacity: 1;
-        transform: translateY(0px);
+        opacity: 0;
+        transform: translateY(-20px);
       }
     }
 
-    .branding-overlay h4 {
+    .branding-reveal h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
       color: #fff;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 2px;
-    }
-    .branding-overlay h4 i {
-      color: #f5b342;
-    }
-    .branding-overlay p {
-      color: rgba(255,255,255,0.85);
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      margin-bottom: 0;
-      font-weight: 500;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 2px 10px rgba(0,0,0,0.3);
+      margin-bottom: 0.3rem;
+      letter-spacing: 1px;
     }
 
-    .quality-tag {
-      display: inline-block;
-      background: rgba(245, 179, 66, 0.2);
-      border: 1px solid rgba(245, 179, 66, 0.3);
-      padding: 0.2rem 0.8rem;
-      border-radius: 20px;
-      font-size: 0.65rem;
-      letter-spacing: 1px;
+    .branding-reveal h2 i {
       color: #f5b342;
-      margin-top: 4px;
+    }
+
+    .branding-reveal .brand-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 4px;
+      font-weight: 500;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+
+    .branding-reveal .brand-tag {
+      display: inline-block;
+      margin-top: 8px;
+      background: rgba(245, 179, 66, 0.25);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(245, 179, 66, 0.3);
+      padding: 0.3rem 1.2rem;
+      border-radius: 30px;
+      color: #f5b342;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ===== GOLDEN SPARKLES ===== */
+    .sparkle-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+      overflow: hidden;
+    }
+
+    .sparkle-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, #ffd700, #f5b342);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      animation: sparkleBurst 10s ease-in-out infinite;
+    }
+
+    .sparkle-particle:nth-child(1) { top: 20%; left: 15%; animation-delay: 4.8s; width: 8px; height: 8px; }
+    .sparkle-particle:nth-child(2) { top: 30%; right: 20%; animation-delay: 5.2s; width: 5px; height: 5px; }
+    .sparkle-particle:nth-child(3) { bottom: 35%; left: 25%; animation-delay: 5.5s; width: 10px; height: 10px; }
+    .sparkle-particle:nth-child(4) { bottom: 25%; right: 15%; animation-delay: 4.6s; width: 6px; height: 6px; }
+    .sparkle-particle:nth-child(5) { top: 50%; left: 10%; animation-delay: 5.8s; width: 4px; height: 4px; }
+    .sparkle-particle:nth-child(6) { top: 45%; right: 10%; animation-delay: 5.0s; width: 7px; height: 7px; }
+    .sparkle-particle:nth-child(7) { top: 15%; left: 45%; animation-delay: 5.3s; width: 5px; height: 5px; }
+    .sparkle-particle:nth-child(8) { bottom: 40%; right: 40%; animation-delay: 4.9s; width: 9px; height: 9px; }
+
+    @keyframes sparkleBurst {
+      0%, 40% { 
+        opacity: 0;
+        transform: scale(0) translateY(0);
+      }
+      48% { 
+        opacity: 1;
+        transform: scale(1.5) translateY(-20px);
+      }
+      55% { 
+        opacity: 1;
+        transform: scale(1) translateY(-40px);
+      }
+      62% { 
+        opacity: 0;
+        transform: scale(0.5) translateY(-60px);
+      }
+      100% { 
+        opacity: 0;
+        transform: scale(0) translateY(-80px);
+      }
     }
 
     /* ===== BUTTONS ===== */
@@ -654,32 +592,67 @@
     }
 
     /* ===== RESPONSIVE ===== */
+    @media (max-width: 992px) {
+      .hero-section {
+        text-align: center;
+      }
+      .hero-buttons {
+        justify-content: center;
+      }
+    }
+
     @media (max-width: 768px) {
       body { padding-top: 65px; }
-      .hero-section { text-align: center; padding-top: 2rem; min-height: 70vh; }
+      .hero-section { 
+        text-align: center; 
+        padding-top: 2rem; 
+        padding-bottom: 3rem;
+        min-height: auto;
+      }
       .hero-title { font-size: 2rem; }
       .hero-sub { font-size: 1rem; }
-      .hero-buttons { flex-direction: column; align-items: center; }
-      .hero-buttons .btn { width: 100%; max-width: 300px; }
+      .hero-buttons { 
+        flex-direction: column; 
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .hero-buttons .btn { 
+        width: 100%; 
+        max-width: 280px;
+        min-width: auto;
+      }
+      /* GAP FIX - Add margin between buttons and animation */
+      .hero-section .row > div:last-child {
+        margin-top: 2rem;
+      }
       .stat-number { font-size: 1.8rem; }
       .stats-section { margin: 1rem; padding: 2rem 0; }
       .product-icon-display { width: 80px; height: 80px; font-size: 2.5rem; }
       .about-image-container img { height: 250px; }
-      .hero-egg-container { width: 280px; height: 320px; }
-      .hen { font-size: 2.8rem; }
-      .egg-image-wrapper { width: 70px; height: 95px; }
-      .egg-glow { width: 90px; height: 115px; }
-      .nest-container { width: 130px; height: 80px; }
-      .sun { width: 40px; height: 40px; top: 10px; right: 20px; }
-      .leaf { font-size: 1.2rem; }
+      
+      .hero-egg-container { 
+        width: 300px; 
+        height: 340px;
+        margin: 0 auto;
+      }
+      .egg-wrapper img { width: 120px; }
+      .egg-crack i { font-size: 5rem; }
+      .branding-reveal h2 { font-size: 1.2rem; }
+      .branding-reveal .brand-sub { font-size: 0.7rem; letter-spacing: 2px; }
+      .sun { width: 50px; height: 50px; top: 30px; }
     }
 
     @media (max-width: 480px) {
-      .hero-egg-container { width: 240px; height: 280px; }
-      .hen { font-size: 2.2rem; }
-      .egg-image-wrapper { width: 55px; height: 75px; }
-      .egg-glow { width: 70px; height: 90px; }
-      .nest-container { width: 110px; height: 70px; }
+      .hero-egg-container { 
+        width: 250px; 
+        height: 290px;
+      }
+      .egg-wrapper img { width: 90px; }
+      .egg-crack i { font-size: 3.5rem; }
+      .branding-reveal h2 { font-size: 1rem; }
+      .branding-reveal .brand-sub { font-size: 0.6rem; letter-spacing: 1px; }
+      .branding-reveal .brand-tag { font-size: 0.5rem; padding: 0.2rem 0.8rem; }
+      .sun { width: 40px; height: 40px; top: 20px; }
     }
   </style>
 </head>
@@ -725,69 +698,48 @@
           <h1 class="hero-title">Premium Natu Kodi <span class="text-warning">Eggs</span></h1>
           <p class="hero-sub">Nature's perfect protein. Free-range, organic, and packed with nutrition for your family.</p>
           <div class="hero-buttons">
-            <a href="#eggs" class="btn btn-warning btn-lg me-2"><i class="fas fa-shopping-cart"></i> Order Now</a>
+            <a href="#eggs" class="btn btn-warning btn-lg"><i class="fas fa-shopping-cart"></i> Order Now</a>
             <a href="#about" class="btn btn-outline-warning btn-lg"><i class="fas fa-info-circle"></i> Learn More</a>
           </div>
         </div>
         <div class="col-lg-6 text-center">
-          <!-- "From Farm to Fresh" Animated Egg Scene -->
+          <!-- Egg Opening with Sunrise Animation -->
           <div class="hero-egg-container">
-            <!-- Scene 1: Farm Background -->
-            <div class="farm-scene">
-              <!-- Sun -->
-              <div class="sun"></div>
-              
-              <!-- Floating Leaves -->
-              <div class="leaf">🌿</div>
-              <div class="leaf">🌱</div>
-              <div class="leaf">🌾</div>
-              <div class="leaf">🍃</div>
-              <div class="leaf">🌿</div>
-              
-              <!-- Scene 2: Hen Walking -->
-              <div class="hen">🐔</div>
+            <!-- Sunrise Background -->
+            <div class="sunrise-bg"></div>
+            
+            <!-- Sun -->
+            <div class="sun"></div>
+            
+            <!-- Egg Appearing -->
+            <div class="egg-wrapper">
+              <img src="./egg.png" 
+                   alt="Vedanshi Natu Kodi Egg" 
+                   onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22260%22%3E%3Cellipse cx=%22100%22 cy=%22130%22 rx=%2280%22 ry=%22110%22 fill=%22%23f5b342%22/%3E%3Ctext x=%22100%22 y=%22140%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22 font-family=%22Arial%22%3E🥚%3C/text%3E%3C/svg%3E'">
             </div>
-
-            <!-- Scene 3: Nest with Egg -->
-            <div class="nest-container">
-              <div class="nest">
-                <div class="nest-straw"></div>
-                <div class="straw-texture"></div>
-                
-                <!-- Your Egg Image -->
-                <div class="egg-image-wrapper">
-                  <img src="./egg.png" 
-                       alt="Vedanshi Natu Kodi Egg" 
-                       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22260%22%3E%3Cellipse cx=%22100%22 cy=%22130%22 rx=%2280%22 ry=%22110%22 fill=%22%23f5b342%22/%3E%3Ctext x=%22100%22 y=%22140%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22 font-family=%22Arial%22%3E🥚%3C/text%3E%3C/svg%3E'">
-                </div>
-                
-                <!-- Scene 4: Warm Glow -->
-                <div class="egg-glow"></div>
-              </div>
+            
+            <!-- Egg Cracking Open -->
+            <div class="egg-crack">
+              <i class="fas fa-egg"></i>
             </div>
-
-            <!-- Scene 5: Grass -->
-            <div class="grass-container">
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
-              <div class="grass-blade"></div>
+            
+            <!-- Sparkles -->
+            <div class="sparkle-container">
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
+              <div class="sparkle-particle"></div>
             </div>
-
-            <!-- Scene 6: Branding -->
-            <div class="branding-overlay">
-              <h4><i class="fas fa-egg"></i> Vedanshi Natu Kodi Eggs</h4>
-              <p>Pure • Natural • Quality</p>
-              <div class="quality-tag">
-                <i class="fas fa-award"></i> Farm Fresh
-              </div>
+            
+            <!-- Branding Reveal -->
+            <div class="branding-reveal">
+              <h2><i class="fas fa-egg"></i> Vedanshi Natu Kodi Eggs</h2>
+              <div class="brand-sub">Pure • Natural • Quality</div>
+              <div class="brand-tag"><i class="fas fa-award"></i> Premium Farm Fresh</div>
             </div>
           </div>
         </div>
