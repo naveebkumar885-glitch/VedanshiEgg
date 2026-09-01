@@ -43,7 +43,6 @@
       background: rgba(255, 248, 235, 0.88);
     }
 
-    /* Fallback gradient if image fails */
     .bg-fallback {
       display: none;
       position: fixed;
@@ -175,7 +174,6 @@
       margin: 0.5rem 0; 
     }
 
-    /* Product Icon Display */
     .product-icon-display {
       width: 120px;
       height: 120px;
@@ -202,6 +200,387 @@
     .product-icon-display.grains { background: linear-gradient(135deg, #8B7355, #6d4c2a); }
     .product-icon-display.dairy { background: linear-gradient(135deg, #17a2b8, #0dcaf0); }
     .product-icon-display.default { background: linear-gradient(135deg, #6c757d, #343a40); }
+
+    /* ===== HERO EGG ANIMATION - "From Farm to Fresh" ===== */
+    .hero-egg-container {
+      position: relative;
+      display: inline-block;
+      width: 350px;
+      height: 400px;
+    }
+
+    /* ===== SCENE 1: Farm Background ===== */
+    .farm-scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
+      animation: farmSunrise 8s ease-in-out infinite;
+    }
+
+    @keyframes farmSunrise {
+      0%, 100% { 
+        background: linear-gradient(180deg, #FFB347 0%, #FFD89B 20%, #98D8C8 50%, #7EC8A0 75%, #5DAE7A 100%);
+      }
+      25% { 
+        background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
+      }
+      50% { 
+        background: linear-gradient(180deg, #4A90D9 0%, #87CEEB 30%, #98D8C8 55%, #7EC8A0 75%, #5DAE7A 100%);
+      }
+      75% { 
+        background: linear-gradient(180deg, #87CEEB 0%, #98D8C8 40%, #7EC8A0 60%, #5DAE7A 100%);
+      }
+    }
+
+    /* Sun */
+    .sun {
+      position: absolute;
+      top: 15px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, #FFD700, #FFA500);
+      border-radius: 50%;
+      box-shadow: 0 0 80px rgba(255, 215, 0, 0.6), 0 0 150px rgba(255, 215, 0, 0.3);
+      animation: sunGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes sunGlow {
+      0%, 100% { 
+        transform: scale(1);
+        box-shadow: 0 0 80px rgba(255, 215, 0, 0.6), 0 0 150px rgba(255, 215, 0, 0.3);
+      }
+      50% { 
+        transform: scale(1.1);
+        box-shadow: 0 0 120px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 215, 0, 0.4);
+      }
+    }
+
+    /* Floating Grass / Leaves */
+    .leaf {
+      position: absolute;
+      font-size: 1.8rem;
+      opacity: 0.6;
+      animation: leafFloat 6s ease-in-out infinite;
+    }
+    .leaf:nth-child(1) { bottom: 10%; left: 5%; animation-delay: 0s; font-size: 2.2rem; }
+    .leaf:nth-child(2) { bottom: 15%; right: 8%; animation-delay: 1.5s; font-size: 1.6rem; }
+    .leaf:nth-child(3) { bottom: 5%; left: 20%; animation-delay: 3s; font-size: 2rem; }
+    .leaf:nth-child(4) { bottom: 8%; right: 25%; animation-delay: 4.5s; font-size: 1.4rem; }
+    .leaf:nth-child(5) { bottom: 20%; left: 40%; animation-delay: 2s; font-size: 1.2rem; }
+
+    @keyframes leafFloat {
+      0%, 100% { 
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.5;
+      }
+      25% { 
+        transform: translateY(-8px) rotate(10deg);
+        opacity: 0.8;
+      }
+      50% { 
+        transform: translateY(-15px) rotate(-5deg);
+        opacity: 0.9;
+      }
+      75% { 
+        transform: translateY(-8px) rotate(8deg);
+        opacity: 0.7;
+      }
+    }
+
+    /* ===== SCENE 2: Hen Walking ===== */
+    .hen {
+      position: absolute;
+      bottom: 25%;
+      left: -20%;
+      font-size: 3.5rem;
+      animation: henWalk 8s ease-in-out infinite;
+    }
+
+    @keyframes henWalk {
+      0% { 
+        transform: translateX(0px) scaleX(1);
+        opacity: 0;
+      }
+      15% { 
+        opacity: 1;
+      }
+      25% { 
+        transform: translateX(40px) scaleX(1);
+      }
+      30% { 
+        transform: translateX(50px) scaleX(-1);
+      }
+      45% { 
+        transform: translateX(120px) scaleX(-1);
+      }
+      50% { 
+        transform: translateX(130px) scaleX(1);
+      }
+      65% { 
+        transform: translateX(200px) scaleX(1);
+      }
+      70% { 
+        transform: translateX(210px) scaleX(-1);
+      }
+      85% { 
+        transform: translateX(280px) scaleX(-1);
+        opacity: 1;
+      }
+      100% { 
+        transform: translateX(350px) scaleX(-1);
+        opacity: 0;
+      }
+    }
+
+    /* ===== SCENE 3: Nest with Egg ===== */
+    .nest-container {
+      position: absolute;
+      bottom: 8%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 160px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nest {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Straw Nest */
+    .nest-straw {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: 
+        radial-gradient(ellipse at 30% 100%, #8B7355 0%, #6d4c2a 40%, #5a3e1b 70%, #4a3214 100%);
+      border-radius: 50% 50% 50% 50% / 100% 100% 30% 30%;
+      box-shadow: inset 0 -10px 30px rgba(0,0,0,0.3);
+    }
+
+    .straw-texture {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: 
+        repeating-linear-gradient(75deg, 
+          rgba(139, 115, 85, 0.3) 0px,
+          rgba(109, 76, 42, 0.2) 3px,
+          rgba(139, 115, 85, 0.1) 6px,
+          rgba(90, 62, 27, 0.3) 9px,
+          rgba(139, 115, 85, 0.2) 12px
+        );
+      border-radius: 50% 50% 50% 50% / 100% 100% 30% 30%;
+    }
+
+    /* ===== EGG IMAGE ===== */
+    .egg-image-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 90px;
+      height: 120px;
+      z-index: 2;
+      animation: eggReveal 8s ease-in-out infinite;
+    }
+
+    .egg-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
+      transition: transform 0.3s ease;
+    }
+
+    /* ===== EGG REVEAL ANIMATION ===== */
+    @keyframes eggReveal {
+      0% { 
+        opacity: 0;
+        transform: translate(-50%, -55%) scale(0.7);
+      }
+      35% { 
+        opacity: 0;
+        transform: translate(-50%, -55%) scale(0.7);
+      }
+      40% { 
+        opacity: 1;
+        transform: translate(-50%, -55%) scale(0.9);
+      }
+      50% { 
+        transform: translate(-50%, -55%) scale(1);
+      }
+      100% { 
+        opacity: 1;
+        transform: translate(-50%, -55%) scale(1);
+      }
+    }
+
+    /* ===== SCENE 4: Warm Glow on Egg ===== */
+    .egg-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 120px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.4) 0%, rgba(255, 215, 0, 0.1) 50%, transparent 70%);
+      animation: eggGlow 8s ease-in-out infinite;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes eggGlow {
+      0%, 30% { 
+        opacity: 0;
+        transform: translate(-50%, -55%) scale(0.5);
+      }
+      45% { 
+        opacity: 0.3;
+        transform: translate(-50%, -55%) scale(1.2);
+      }
+      55% { 
+        opacity: 1;
+        transform: translate(-50%, -55%) scale(1.5);
+      }
+      65% { 
+        opacity: 0.8;
+        transform: translate(-50%, -55%) scale(1.8);
+      }
+      75%, 100% { 
+        opacity: 0.5;
+        transform: translate(-50%, -55%) scale(1.6);
+      }
+    }
+
+    /* ===== SCENE 5: Grass appearing around ===== */
+    .grass-container {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .grass-blade {
+      position: absolute;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(to top, #2d7d3a, #4CAF50, #66BB6A);
+      border-radius: 2px 2px 0 0;
+      transform-origin: bottom;
+      animation: grassGrow 8s ease-in-out infinite;
+    }
+
+    .grass-blade:nth-child(1) { left: 5%; height: 30px; animation-delay: 4s; }
+    .grass-blade:nth-child(2) { left: 12%; height: 45px; animation-delay: 4.3s; width: 3px; }
+    .grass-blade:nth-child(3) { left: 20%; height: 25px; animation-delay: 4.6s; }
+    .grass-blade:nth-child(4) { left: 30%; height: 50px; animation-delay: 4.1s; width: 5px; }
+    .grass-blade:nth-child(5) { left: 40%; height: 35px; animation-delay: 4.8s; }
+    .grass-blade:nth-child(6) { left: 50%; height: 40px; animation-delay: 4.4s; }
+    .grass-blade:nth-child(7) { left: 60%; height: 28px; animation-delay: 5s; }
+    .grass-blade:nth-child(8) { left: 70%; height: 55px; animation-delay: 4.2s; width: 5px; }
+    .grass-blade:nth-child(9) { left: 80%; height: 32px; animation-delay: 4.7s; }
+    .grass-blade:nth-child(10) { left: 88%; height: 42px; animation-delay: 4.5s; }
+    .grass-blade:nth-child(11) { left: 94%; height: 20px; animation-delay: 4.9s; }
+
+    @keyframes grassGrow {
+      0%, 35% { 
+        transform: scaleY(0) rotate(-5deg);
+        opacity: 0;
+      }
+      45% { 
+        transform: scaleY(1) rotate(0deg);
+        opacity: 1;
+      }
+      55% { 
+        transform: scaleY(1) rotate(3deg);
+      }
+      65% { 
+        transform: scaleY(1) rotate(-2deg);
+      }
+      100% { 
+        transform: scaleY(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+
+    /* ===== SCENE 6: Branding Fade In ===== */
+    .branding-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      text-align: center;
+      opacity: 0;
+      animation: brandFadeIn 8s ease-in-out infinite;
+      z-index: 5;
+      border-radius: 0 0 24px 24px;
+    }
+
+    @keyframes brandFadeIn {
+      0%, 65% { 
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      75% { 
+        opacity: 1;
+        transform: translateY(0px);
+      }
+      100% { 
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+
+    .branding-overlay h4 {
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 2px;
+    }
+    .branding-overlay h4 i {
+      color: #f5b342;
+    }
+    .branding-overlay p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      margin-bottom: 0;
+      font-weight: 500;
+    }
+
+    .quality-tag {
+      display: inline-block;
+      background: rgba(245, 179, 66, 0.2);
+      border: 1px solid rgba(245, 179, 66, 0.3);
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: #f5b342;
+      margin-top: 4px;
+    }
 
     /* ===== BUTTONS ===== */
     .btn-warning { 
@@ -286,11 +665,25 @@
       .stats-section { margin: 1rem; padding: 2rem 0; }
       .product-icon-display { width: 80px; height: 80px; font-size: 2.5rem; }
       .about-image-container img { height: 250px; }
+      .hero-egg-container { width: 280px; height: 320px; }
+      .hen { font-size: 2.8rem; }
+      .egg-image-wrapper { width: 70px; height: 95px; }
+      .egg-glow { width: 90px; height: 115px; }
+      .nest-container { width: 130px; height: 80px; }
+      .sun { width: 40px; height: 40px; top: 10px; right: 20px; }
+      .leaf { font-size: 1.2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-egg-container { width: 240px; height: 280px; }
+      .hen { font-size: 2.2rem; }
+      .egg-image-wrapper { width: 55px; height: 75px; }
+      .egg-glow { width: 70px; height: 90px; }
+      .nest-container { width: 110px; height: 70px; }
     }
   </style>
 </head>
 <body>
-  <!-- Fallback Gradient (shows if image fails) -->
   <div class="bg-fallback"></div>
 
   <!-- Background Image -->
@@ -337,8 +730,65 @@
           </div>
         </div>
         <div class="col-lg-6 text-center">
-          <div class="product-icon-display egg" style="width:300px;height:300px;font-size:10rem;margin:0 auto;box-shadow:0 10px 40px rgba(245,179,66,0.3);">
-            <i class="fas fa-egg"></i>
+          <!-- "From Farm to Fresh" Animated Egg Scene -->
+          <div class="hero-egg-container">
+            <!-- Scene 1: Farm Background -->
+            <div class="farm-scene">
+              <!-- Sun -->
+              <div class="sun"></div>
+              
+              <!-- Floating Leaves -->
+              <div class="leaf">🌿</div>
+              <div class="leaf">🌱</div>
+              <div class="leaf">🌾</div>
+              <div class="leaf">🍃</div>
+              <div class="leaf">🌿</div>
+              
+              <!-- Scene 2: Hen Walking -->
+              <div class="hen">🐔</div>
+            </div>
+
+            <!-- Scene 3: Nest with Egg -->
+            <div class="nest-container">
+              <div class="nest">
+                <div class="nest-straw"></div>
+                <div class="straw-texture"></div>
+                
+                <!-- Your Egg Image -->
+                <div class="egg-image-wrapper">
+                  <img src="./egg.png" 
+                       alt="Vedanshi Natu Kodi Egg" 
+                       onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22260%22%3E%3Cellipse cx=%22100%22 cy=%22130%22 rx=%2280%22 ry=%22110%22 fill=%22%23f5b342%22/%3E%3Ctext x=%22100%22 y=%22140%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2240%22 font-family=%22Arial%22%3E🥚%3C/text%3E%3C/svg%3E'">
+                </div>
+                
+                <!-- Scene 4: Warm Glow -->
+                <div class="egg-glow"></div>
+              </div>
+            </div>
+
+            <!-- Scene 5: Grass -->
+            <div class="grass-container">
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+              <div class="grass-blade"></div>
+            </div>
+
+            <!-- Scene 6: Branding -->
+            <div class="branding-overlay">
+              <h4><i class="fas fa-egg"></i> Vedanshi Natu Kodi Eggs</h4>
+              <p>Pure • Natural • Quality</p>
+              <div class="quality-tag">
+                <i class="fas fa-award"></i> Farm Fresh
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -379,7 +829,7 @@
       <div class="row align-items-center">
         <div class="col-lg-6 mb-4 mb-lg-0">
           <div class="about-image-container">
-            <img src="./egg image.png" 
+            <img src="./egg image.png"
                  alt="Vedanshi Natu Kodi Eggs Farm" 
                  onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22400%22%3E%3Crect fill=%22%23f5b342%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%22400%22 y=%22200%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2224%22 font-family=%22Arial%22%3E🥚 Vedanshi Farm%3C/text%3E%3C/svg%3E'">
             <div class="about-image-overlay">
@@ -613,7 +1063,6 @@
           container.appendChild(col);
         });
 
-        // Add event listeners to order buttons
         document.querySelectorAll('.order-btn').forEach(btn => {
           btn.addEventListener('click', function() {
             const productId = this.getAttribute('data-id');
@@ -639,7 +1088,6 @@
     function orderProduct(productId) {
       console.log('Ordering product:', productId);
       sessionStorage.setItem('selectedProductId', productId);
-      // Use relative path - works both locally and on Netlify
       window.location.href = 'order.html';
     }
 
